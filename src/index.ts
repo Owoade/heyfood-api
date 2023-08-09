@@ -4,10 +4,15 @@ import { config } from "dotenv"
 import mongoose from "mongoose";
 import resturant_router from "./services/resturants/route";
 import Store, { Tag } from "./services/resturants/model";
+import cors from "cors";
 
 config();
 
 const app = express()
+
+app.use(cors({
+    origin: "*"
+}))
 
 app.use(express.urlencoded({ extended: false, limit: "50mb"  }));
 app.use(express.json({limit: "50mb"}));
