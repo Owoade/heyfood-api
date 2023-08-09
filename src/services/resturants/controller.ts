@@ -16,7 +16,7 @@ class ResturantController {
       statusCode: 200,
       message: "Ok",
       data: {
-        resturants: result,
+        result
       },
     });
 
