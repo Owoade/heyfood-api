@@ -5,6 +5,7 @@ import { IStore, ITag } from "./type";
 class ResturantRepository {
   constructor() {
     this.filter_by_params = this.filter_by_params.bind(this);
+    this.search = this.search.bind(this);
   }
 
   async get_all() {
@@ -16,7 +17,7 @@ class ResturantRepository {
   async search(query: string) {
     const result = await Store.find({
       $or: [
-        { name: { $regex: query, } },
+        { name: { $regex:  this.capitalizeWords(query), } },
         { _menu: { $regex: query } },
       ],
     }).exec();
@@ -49,6 +50,13 @@ class ResturantRepository {
 
   async get_all_tags(){
     return ( await Tag.find() ) as ITag[]
+  }
+
+  private capitalizeWords(words: string) {
+    return words
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 
   private query_hash( param: FilterParams ) {

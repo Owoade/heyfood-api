@@ -27,6 +27,7 @@ const model_1 = __importStar(require("./model"));
 class ResturantRepository {
     constructor() {
         this.filter_by_params = this.filter_by_params.bind(this);
+        this.search = this.search.bind(this);
     }
     async get_all() {
         const all_resturant = await model_1.default.find();
@@ -35,7 +36,7 @@ class ResturantRepository {
     async search(query) {
         const result = await model_1.default.find({
             $or: [
-                { name: { $regex: query, } },
+                { name: { $regex: this.capitalizeWords(query), } },
                 { _menu: { $regex: query } },
             ],
         }).exec();
@@ -59,6 +60,12 @@ class ResturantRepository {
     }
     async get_all_tags() {
         return (await model_1.Tag.find());
+    }
+    capitalizeWords(words) {
+        return words
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
     }
     query_hash(param) {
         const hash = {
