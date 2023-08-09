@@ -3,7 +3,7 @@ import { Response } from "express";
 export default function respond( res: Response, config: IConfig ){
     const { message, data, status, statusCode, token } = config
     return res.status( statusCode ).json({
-        message: message?.replaceAll("\"", '' ) ?? "Operation successsfull",
+        message: message ?? "Operation successsfull",
         data,
         token
     })
